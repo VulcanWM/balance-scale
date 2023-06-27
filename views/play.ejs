@@ -14,11 +14,26 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
-      socket.on('game started', function(that_game_id) {
+      var round = 0;
+      socket.on('round', function(that_game_id) {
           if (that_game_id == <%= game_id %>){
-            document.getElementById("content").innerHTML = "<p>Game started!</p>"
+            round ++;
+            document.getElementById("content").innerHTML = `<p>Round ${round}!</p>`
+            document.getElementById("content").innerHTML +=  `
+            <p>Pick a number between 1 to 100.</p>
+            <input type="number" id="number">
+            <button type="submit" onclick="submitNumber()">Submit</button>
+            `
           }
       })
+      function submitNumber(){
+        let number = document.getElementById("number").value;
+        if (number > 100 || number < 0){
+          document.getElementById("number").value = "";
+        } else {
+          // submit number
+        }
+      }
   </script>
   </body>
 </html>
