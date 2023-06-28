@@ -18,12 +18,15 @@
       socket.on('round', function(that_game_id) {
           if (that_game_id == <%= game_id %>){
             round ++;
-            document.getElementById("content").innerHTML = `<p>Round ${round}!</p>`
-            document.getElementById("content").innerHTML +=  `
+            document.getElementById("content").innerHTML = `<h3>Round ${round}</h3>`
+            const newDiv = document.createElement("div");
+            newDiv.id = "form"
+            newDiv.innerHTML +=  `
             <p>Pick a number between 1 to 100.</p>
             <input type="number" id="number">
             <button type="submit" onclick="submitNumber()">Submit</button>
             `
+            document.getElementById("content").appendChild(newDiv)
           }
       })
       function submitNumber(){
@@ -31,6 +34,8 @@
         if (number > 100 || number < 0){
           document.getElementById("number").value = "";
         } else {
+          socket.emit('submit number', "<%= nickname %>", <%= game_id %>, number);
+          document.getElementById("form").innerHTML = "Number submitted!"
           // submit number
         }
       }

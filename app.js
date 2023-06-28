@@ -86,6 +86,9 @@ io.on('connection', (socket) => {
     socket.on('round', (game_id) => {
         io.emit('round', game_id)
     })
+    socket.on('submit number', (user, game_id, number) => {
+        io.emit('submit number', user, game_id, number)
+    })
 });
 
 server.listen(3000, () => {

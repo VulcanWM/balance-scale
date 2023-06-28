@@ -13,11 +13,12 @@
             <h2>Players</h2>
         </div>
     </div>
-    <button onclick="startGame()">Start Game</button>
+    <button onclick="startRound()">Start Game</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
         var round = 0;
+        var roundData = {}
         socket.on('user joined', function(user, that_game_id) {
             if (that_game_id == <%= game_id %>){
                 const theDiv = document.getElementById("users")
@@ -25,10 +26,17 @@
                 theDiv.appendChild(content); 
             }
         })
-        function startGame(){
+        socket.on('submit number', function(user, that_game_id, number) {
+            if (that_game_id == <%= game_id %>){
+                roundData[user] = parseInt(number);
+                console.log(roundData)
+            }
+        })
+        function startRound(){
             socket.emit('round', <%= game_id %>);
             round ++;
-            document.getElementById("content").innerHTML = `<p>Round ${round}!</p>`
+            roundData = {}
+            document.getElementById("content").innerHTML = `<p>Round ${round}</p>`
         }
     </script>
   </body>
