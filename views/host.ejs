@@ -13,7 +13,7 @@
             <h2>Players</h2>
         </div>
     </div>
-    <button onclick="startRound()">Start Game</button>
+    <button id="startbutton" onclick="startGame()">Start Game</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
@@ -32,11 +32,23 @@
                 console.log(roundData)
             }
         })
+        function startGame(){
+            document.getElementById("startbutton").style.display = "none"
+            startRound();
+        }
         function startRound(){
-            socket.emit('round', <%= game_id %>);
+            socket.emit('round start', <%= game_id %>);
             round ++;
             roundData = {}
             document.getElementById("content").innerHTML = `<p>Round ${round}</p>`
+            var timeleft = 20;
+            var downloadTimer = setInterval(function(){
+              if(timeleft <= 0){
+                clearInterval(downloadTimer);
+                socket.emit("round end", <%= game_id %>, roundData)
+              }
+              timeleft -= 1;
+            }, 1000);
         }
     </script>
   </body>

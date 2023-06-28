@@ -83,11 +83,14 @@ io.on('connection', (socket) => {
     socket.on('user joined', (user, game_id) => {
         io.emit('user joined', user, game_id);
     });
-    socket.on('round', (game_id) => {
-        io.emit('round', game_id)
+    socket.on('round start', (game_id) => {
+        io.emit('round start', game_id)
     })
     socket.on('submit number', (user, game_id, number) => {
         io.emit('submit number', user, game_id, number)
+    })
+    socket.on('round end', (game_id, user_data) => {
+        io.emit("round end", game_id, user_data)
     })
 });
 

@@ -15,7 +15,7 @@
     <script>
       var socket = io();
       var round = 0;
-      socket.on('round', function(that_game_id) {
+      socket.on('round start', function(that_game_id) {
           if (that_game_id == <%= game_id %>){
             round ++;
             document.getElementById("content").innerHTML = `<h3>Round ${round}</h3>`
@@ -29,6 +29,16 @@
             document.getElementById("content").appendChild(newDiv)
           }
       })
+      socket.on('round end', function(that_game_id, user_data) {
+          if (that_game_id == <%= game_id %>){
+            document.getElementById("content").innerHTML = `<h3>Round ${round} results</h3>`
+            const newDiv = document.createElement("div");
+            newDiv.innerHTML +=  `
+            <p>${user_data}</p>
+            `
+            document.getElementById("content").appendChild(newDiv)
+          }
+      })
       function submitNumber(){
         let number = document.getElementById("number").value;
         if (number > 100 || number < 0){
@@ -36,7 +46,6 @@
         } else {
           socket.emit('submit number', "<%= nickname %>", <%= game_id %>, number);
           document.getElementById("form").innerHTML = "Number submitted!"
-          // submit number
         }
       }
   </script>
