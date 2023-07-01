@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Play Game <%= game_id %> - GuessAlpha</title>
+    <title>Play Game <%= game_id %> - Beauty Contest</title>
     <style>
     </style>
   </head>
@@ -35,7 +35,7 @@
             const user_scores = Object.keys(user_data)
             const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
             const winning_score = average(user_scores) * 0.8
-            
+
             document.getElementById("content").innerHTML = `<h3>Round ${round} results</h3>`
             const newDiv = document.createElement("div");
             newDiv.innerHTML +=  `
