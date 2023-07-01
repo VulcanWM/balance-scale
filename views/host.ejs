@@ -18,12 +18,14 @@
     <script>
         var socket = io();
         var round = 0;
-        var roundData = {}
+        var roundData = {};
+        var users = []
         socket.on('user joined', function(user, that_game_id) {
             if (that_game_id == <%= game_id %>){
                 const theDiv = document.getElementById("users")
-                var content = document.createTextNode(user);
+                var content = document.createTextNode(user + "\n");
                 theDiv.appendChild(content); 
+                users.push(user)
             }
         })
         socket.on('submit number', function(user, that_game_id, number) {
@@ -33,8 +35,12 @@
             }
         })
         function startGame(){
-            document.getElementById("startbutton").style.display = "none"
-            startRound();
+            if (users.length != 5){
+              alert("You must have 5 players to start the game!")
+            } else {
+              document.getElementById("startbutton").style.display = "none"
+              startRound();
+            }
         }
         function startRound(){
             socket.emit('round start', <%= game_id %>);
