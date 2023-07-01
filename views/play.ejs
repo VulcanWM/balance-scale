@@ -31,16 +31,23 @@
       })
       socket.on('round end', function(that_game_id, user_data) {
           if (that_game_id == <%= game_id %>){
-            console.log(user_data)
-            const user_scores = Object.keys(user_data)
+            const user_scores = Object.values(user_data);
             const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
-            const winning_score = average(user_scores) * 0.8
-
+            const winning_score = average(user_scores) * 0.8;
+            const winner_score = user_scores.reduce((prev, curr) => Math.abs(curr - winning_score) < Math.abs(prev - winning_score) ? curr : prev);
+            const winner = Object.keys(user_data).filter(function(key) {return user_data[key] === winner_score})[0];
             document.getElementById("content").innerHTML = `<h3>Round ${round} results</h3>`
             const newDiv = document.createElement("div");
-            newDiv.innerHTML +=  `
-            <p>${user_data}</p>
-            `
+            for (let user in user_data) {
+              const p = document.createElement("p");
+              if (user == winner){
+                p.innerText = "WINNER: " + user + ":" + user_data[user]
+                p.style.fontWeight = "bold";
+              } else {
+                p.innerText = user + ":" + user_data[user]
+              }
+              newDiv.append(p); 
+            }
             document.getElementById("content").appendChild(newDiv)
           }
       })

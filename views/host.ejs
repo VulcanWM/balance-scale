@@ -19,13 +19,16 @@
         var socket = io();
         var round = 0;
         var roundData = {};
-        var users = []
+        var users = [];
+        var scores = {}
         socket.on('user joined', function(user, that_game_id) {
             if (that_game_id == <%= game_id %>){
                 const theDiv = document.getElementById("users")
-                var content = document.createTextNode(user + "\n");
-                theDiv.appendChild(content); 
+                const p = document.createElement("p");
+                p.innerText = user;
+                theDiv.append(p); 
                 users.push(user)
+                scores[user] = 0;
             }
         })
         socket.on('submit number', function(user, that_game_id, number) {
@@ -56,6 +59,14 @@
                 document.getElementById("startbutton").style.display = "block"
                 document.getElementById("startbutton").innerText = "Next Round"
                 document.getElementById("startbutton").setAttribute( "onClick", "startRound()" );
+                const user_data = roundData
+                const user_scores = Object.values(user_data);
+                const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
+                const winning_score = average(user_scores) * 0.8;
+                const winner_score = user_scores.reduce((prev, curr) => Math.abs(curr - winning_score) < Math.abs(prev - winning_score) ? curr : prev);
+                const winner = Object.keys(user_data).filter(function(key) {return user_data[key] === winner_score})[0];
+                // reduce everyone's score by 1
+                // add 1 to winner's score
               }
               timeleft -= 1;
             }, 1000);
