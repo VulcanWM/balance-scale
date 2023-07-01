@@ -46,12 +46,16 @@
             socket.emit('round start', <%= game_id %>);
             round ++;
             roundData = {}
+            document.getElementById("startbutton").style.display = "none"
             document.getElementById("content").innerHTML = `<p>Round ${round}</p>`
             var timeleft = 20;
             var downloadTimer = setInterval(function(){
               if(timeleft <= 0){
                 clearInterval(downloadTimer);
                 socket.emit("round end", <%= game_id %>, roundData)
+                document.getElementById("startbutton").style.display = "block"
+                document.getElementById("startbutton").innerText = "Next Round"
+                document.getElementById("startbutton").setAttribute( "onClick", "startRound()" );
               }
               timeleft -= 1;
             }, 1000);

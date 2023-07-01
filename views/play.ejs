@@ -31,6 +31,11 @@
       })
       socket.on('round end', function(that_game_id, user_data) {
           if (that_game_id == <%= game_id %>){
+            console.log(user_data)
+            const user_scores = Object.keys(user_data)
+            const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
+            const winning_score = average(user_scores) * 0.8
+            
             document.getElementById("content").innerHTML = `<h3>Round ${round} results</h3>`
             const newDiv = document.createElement("div");
             newDiv.innerHTML +=  `
