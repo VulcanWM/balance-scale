@@ -8,6 +8,7 @@
   <body>
     <h1>GAME <%= game_id %></h1>
     <h3><%= nickname %></h3>
+    <p>Score: <span id="score">0</span></p>
     <div id="content">
       <p>Please wait until the host starts the game</p>
     </div>
@@ -15,6 +16,7 @@
     <script>
       var socket = io();
       var round = 0;
+      var score = 0;
       socket.on('round start', function(that_game_id) {
           if (that_game_id == <%= game_id %>){
             round ++;
@@ -49,6 +51,10 @@
               newDiv.append(p); 
             }
             document.getElementById("content").appendChild(newDiv)
+            if (winner != "<%= nickname %>"){
+              score -= 1;
+              document.getElementById("score").innerText = score;
+            }
           }
       })
       function submitNumber(){
