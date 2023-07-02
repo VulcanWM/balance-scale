@@ -89,8 +89,8 @@ io.on('connection', (socket) => {
     socket.on('submit number', (user, game_id, number) => {
         io.emit('submit number', user, game_id, number)
     })
-    socket.on('round end', (game_id, user_data) => {
-        io.emit("round end", game_id, user_data)
+    socket.on('round end', (game_id, user_data, scores) => {
+        io.emit("round end", game_id, user_data, scores)
     })
 });
 

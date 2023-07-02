@@ -29,7 +29,7 @@
             document.getElementById("content").appendChild(newDiv)
           }
       })
-      socket.on('round end', function(that_game_id, user_data) {
+      socket.on('round end', function(that_game_id, user_data, scores) {
           if (that_game_id == <%= game_id %>){
             const user_scores = Object.values(user_data);
             const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
