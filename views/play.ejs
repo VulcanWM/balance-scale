@@ -39,18 +39,45 @@
             const winner_score = user_scores.reduce((prev, curr) => Math.abs(curr - winning_score) < Math.abs(prev - winning_score) ? curr : prev);
             const winner = Object.keys(user_data).filter(function(key) {return user_data[key] === winner_score})[0];
             document.getElementById("content").innerHTML = `<h3>Round ${round} results</h3>`
-            const newDiv = document.createElement("div");
-            for (let user in user_data) {
-              const p = document.createElement("p");
+            const newTable = document.createElement("table");
+            const tr_1 = document.createElement("tr")
+            const tr_2 = document.createElement("tr")
+            const tr_3 = document.createElement("tr")
+            for (let user in user_data){
+              const th = document.createElement("th");
+              th.innerText = user;
+              tr_1.appendChild(th)
+              const td_1 = document.createElement("td")
+              td_1.innerText = user_data[user]
               if (user == winner){
-                p.innerText = "WINNER: " + user + ":" + user_data[user]
-                p.style.fontWeight = "bold";
+                td_1.style.color = "green";
               } else {
-                p.innerText = user + ":" + user_data[user]
+                td_1.style.color = "red";
               }
-              newDiv.append(p); 
+              tr_2.appendChild(td_1)
+              const td_2 = document.createElement("td")
+              td_2.innerText = scores[user]
+              if (user == winner){
+                td_2.style.color = "green";
+              } else {
+                td_2.style.color = "red";
+              }
+              tr_3.appendChild(td_2)
             }
-            document.getElementById("content").appendChild(newDiv)
+            newTable.appendChild(tr_1)
+            newTable.appendChild(tr_2)
+            newTable.appendChild(tr_3)
+            // for (let user in user_data) {
+            //   const p = document.createElement("p");
+            //   if (user == winner){
+            //     p.innerText = "WINNER: " + user + ":" + user_data[user]
+            //     p.style.fontWeight = "bold";
+            //   } else {
+            //     p.innerText = user + ":" + user_data[user]
+            //   }
+            //   newDiv.append(p); 
+            // }
+            document.getElementById("content").appendChild(newTable)
             if (winner != "<%= nickname %>"){
               score -= 1;
               document.getElementById("score").innerText = score;
